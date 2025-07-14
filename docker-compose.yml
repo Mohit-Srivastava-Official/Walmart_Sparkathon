@@ -1,0 +1,347 @@
+# SecureCart AI Fraud Detection System - Docker Compose Configuration
+# This file orchestrates all services needed for the complete fraud detection system
+
+version: '3.8'
+
+# =============================================================================
+# SERVICES CONFIGURATION
+# =============================================================================
+services:
+
+  # =============================================================================
+  # DATABASE SERVICE (PostgreSQL)
+  # =============================================================================
+  database:
+    image: postgres:15-alpine
+    container_name: securecart_database
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: securecart_fraud_detection
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secure_password_change_me}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    ports:
+      - "5432:5432"
+    networks:
+      - securecart_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d securecart_fraud_detection"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    command: postgres -c shared_preload_libraries=pg_stat_statements
+
+  # =============================================================================
+  # REDIS SERVICE (Caching and Session Store)
+  # =============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: securecart_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis_password_change_me}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - securecart_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # =============================================================================
+  # BACKEND SERVICE (Flask API)
+  # =============================================================================
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: securecart_backend
+    restart: unless-stopped
+    environment:
+      # Flask Configuration
+      FLASK_ENV: production
+      SECRET_KEY: ${SECRET_KEY:-your-secret-key-change-in-production}
+
+      # Database Configuration
+      DATABASE_URL: postgresql://postgres:${DB_PASSWORD:-secure_password_change_me}@database:5432/securecart_fraud_detection
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_NAME: securecart_fraud_detection
+      DB_USERNAME: postgres
+      DB_PASSWORD: ${DB_PASSWORD:-secure_password_change_me}
+
+      # Redis Configuration
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis_password_change_me}@redis:6379/0
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-redis_password_change_me}
+
+      # Security Configuration
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-jwt-secret-key-change-in-production}
+      JWT_ACCESS_TOKEN_EXPIRES: 3600
+
+      # ML Configuration
+      ML_MODEL_PATH: /app/models
+      FRAUD_THRESHOLD: 0.7
+      HIGH_RISK_THRESHOLD: 0.5
+
+      # Blockchain Configuration
+      BLOCKCHAIN_ENABLED: ${BLOCKCHAIN_ENABLED:-false}
+      BLOCKCHAIN_PROVIDER_URL: ${BLOCKCHAIN_PROVIDER_URL:-http://ganache:8545}
+
+      # Feature Flags
+      FEATURE_FRAUD_DETECTION: true
+      FEATURE_REAL_TIME_MONITORING: true
+      FEATURE_ADVANCED_ANALYTICS: true
+
+      # Monitoring
+      LOG_LEVEL: INFO
+      HEALTH_CHECK_ENABLED: true
+    volumes:
+      - ml_models:/app/models
+      - app_logs:/app/logs
+    ports:
+      - "5000:5000"
+    networks:
+      - securecart_network
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # =============================================================================
+  # FRONTEND SERVICE (React Application with Nginx)
+  # =============================================================================
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    container_name: securecart_frontend
+    restart: unless-stopped
+    environment:
+      REACT_APP_API_URL: http://localhost:5000/api
+      REACT_APP_WEBSOCKET_URL: http://localhost:5000
+      REACT_APP_ENVIRONMENT: production
+    ports:
+      - "3000:80"
+    networks:
+      - securecart_network
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # =============================================================================
+  # BLOCKCHAIN SERVICE (Ganache for Development)
+  # =============================================================================
+  ganache:
+    image: trufflesuite/ganache:latest
+    container_name: securecart_ganache
+    restart: unless-stopped
+    command: >
+      ganache
+      --host 0.0.0.0
+      --port 8545
+      --networkId 1337
+      --accounts 10
+      --defaultBalanceEther 100
+      --mnemonic "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+      --gasLimit 10000000
+      --gasPrice 20000000000
+    ports:
+      - "8545:8545"
+    networks:
+      - securecart_network
+    profiles:
+      - blockchain
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8545"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # =============================================================================
+  # MONITORING SERVICES
+  # =============================================================================
+
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: securecart_prometheus
+    restart: unless-stopped
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    ports:
+      - "9090:9090"
+    networks:
+      - securecart_network
+    profiles:
+      - monitoring
+
+  # Grafana for monitoring dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: securecart_grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./docker/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./docker/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    ports:
+      - "3001:3000"
+    networks:
+      - securecart_network
+    depends_on:
+      - prometheus
+    profiles:
+      - monitoring
+
+  # Elasticsearch for log aggregation
+  elasticsearch:
+    image: elasticsearch:8.8.0
+    container_name: securecart_elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - securecart_network
+    profiles:
+      - logging
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Kibana for log visualization
+  kibana:
+    image: kibana:8.8.0
+    container_name: securecart_kibana
+    restart: unless-stopped
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - securecart_network
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    profiles:
+      - logging
+
+  # =============================================================================
+  # LOAD BALANCER (Nginx)
+  # =============================================================================
+  nginx:
+    image: nginx:alpine
+    container_name: securecart_nginx
+    restart: unless-stopped
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/ssl:/etc/nginx/ssl:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - securecart_network
+    depends_on:
+      - frontend
+      - backend
+    profiles:
+      - production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+# =============================================================================
+# NETWORKS CONFIGURATION
+# =============================================================================
+networks:
+  securecart_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# =============================================================================
+# VOLUMES CONFIGURATION
+# =============================================================================
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  ml_models:
+    driver: local
+  app_logs:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+
+# =============================================================================
+# DOCKER COMPOSE PROFILES
+# =============================================================================
+# Usage examples:
+#
+# Basic development setup:
+# docker-compose up database redis backend
+#
+# Full development with blockchain:
+# docker-compose --profile blockchain up
+#
+# Production with monitoring:
+# docker-compose --profile production --profile monitoring up
+#
+# Development with logging:
+# docker-compose --profile logging up database redis backend elasticsearch kibana
+#
+# Complete setup with all services:
+# docker-compose --profile blockchain --profile monitoring --profile logging --profile production up

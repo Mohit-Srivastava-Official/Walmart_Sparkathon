@@ -1,0 +1,101 @@
+# Flask backend requirements for SecureCart AI fraud detection system
+# This file lists all Python packages needed to run the backend server
+
+# Core Flask framework and extensions
+Flask==2.3.3                    # Main web framework for building REST APIs
+Flask-CORS==4.0.0               # Cross-Origin Resource Sharing support for frontend communication
+Flask-JWT-Extended==4.5.3       # JWT token authentication and authorization
+Flask-Limiter==3.5.0           # Rate limiting for API endpoints to prevent abuse
+Flask-SQLAlchemy==3.0.5        # SQLAlchemy ORM integration for database operations
+Flask-Migrate==4.0.5           # Database migration support for schema changes
+
+# Database and data storage
+SQLAlchemy==2.0.23             # SQL toolkit and Object-Relational Mapping library
+psycopg2-binary==2.9.9         # PostgreSQL adapter for Python (production database)
+sqlite3                        # SQLite support for development (built into Python)
+redis==5.0.1                   # Redis client for caching and real-time data storage
+pymongo==4.6.0                 # MongoDB driver for document storage
+
+# Machine Learning and AI
+tensorflow==2.14.0             # Deep learning framework for fraud detection models
+scikit-learn==1.3.2           # Machine learning library for traditional ML algorithms
+pandas==2.1.4                 # Data manipulation and analysis library
+numpy==1.24.4                 # Numerical computing library
+matplotlib==3.8.2             # Plotting library for data visualization
+seaborn==0.13.0               # Statistical data visualization
+joblib==1.3.2                 # Model serialization and parallel computing
+
+# Blockchain integration
+web3==6.12.0                  # Web3 library for Ethereum blockchain interaction
+eth-account==0.9.0            # Ethereum account management
+py-solc-x==1.12.0             # Solidity compiler wrapper for smart contracts
+
+# Security and cryptography
+bcrypt==4.1.2                 # Password hashing for secure authentication
+cryptography==41.0.7          # Cryptographic recipes and primitives
+PyJWT==2.8.0                  # JSON Web Token implementation
+passlib==1.7.4               # Password hashing library with multiple algorithms
+
+# API and HTTP utilities
+requests==2.31.0              # HTTP library for making API calls
+urllib3==2.1.0               # HTTP client library
+httpx==0.25.2                # Modern HTTP client for async operations
+
+# Data validation and serialization
+marshmallow==3.20.2           # Object serialization and validation
+cerberus==1.3.5               # Data validation library
+jsonschema==4.20.0            # JSON schema validation
+
+# Development and testing
+pytest==7.4.3                # Testing framework for unit and integration tests
+pytest-flask==1.3.0          # Flask-specific testing utilities
+pytest-cov==4.1.0            # Coverage reporting for tests
+factory-boy==3.3.0           # Test data generation
+faker==20.1.0                # Fake data generation for testing
+
+# Monitoring and logging
+gunicorn==21.2.0              # WSGI HTTP Server for production deployment
+celery==5.3.4                # Distributed task queue for background jobs
+flower==2.0.1                # Web-based tool for monitoring Celery
+sentry-sdk==1.38.0           # Error tracking and performance monitoring
+
+# Configuration and environment
+python-dotenv==1.0.0          # Load environment variables from .env file
+click==8.1.7                  # Command line interface creation toolkit
+PyYAML==6.0.1                # YAML parser and emitter
+toml==0.10.2                  # TOML parser for configuration files
+
+# Date and time utilities
+python-dateutil==2.8.2       # Extensions to the standard Python datetime module
+pytz==2023.3.post1           # World timezone definitions
+
+# Email and notifications
+sendgrid==6.11.0             # SendGrid email service integration
+twilio==8.10.3               # Twilio SMS and communication APIs
+slack-sdk==3.26.1            # Slack SDK for notifications
+
+# File processing and utilities
+Pillow==10.1.0               # Python Imaging Library for image processing
+openpyxl==3.1.2              # Excel file reading and writing
+python-magic==0.4.27         # File type detection
+
+# Async support
+asyncio                       # Asynchronous I/O (built into Python 3.7+)
+aiohttp==3.9.1               # Async HTTP client/server framework
+aioredis==2.0.1              # Async Redis client
+
+# Performance and optimization
+cachetools==5.3.2            # Extensible memoizing collections and decorators
+memory-profiler==0.61.0      # Memory usage profiling
+psutil==5.9.6                # System and process utilities
+
+# Development tools
+black==23.11.0               # Code formatter for consistent style
+flake8==6.1.0                # Code linting and style checking
+isort==5.12.0                # Import sorting utility
+mypy==1.7.1                  # Static type checker for Python
+
+# Production deployment
+uwsgi==2.0.23                # Alternative WSGI server for production
+supervisor==4.2.5            # Process control system for Unix
+docker==6.1.3                # Docker SDK for Python

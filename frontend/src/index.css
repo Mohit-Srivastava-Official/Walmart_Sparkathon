@@ -1,0 +1,308 @@
+/* Global styles for SecureCart AI application */
+
+/* CSS Reset and base styles */
+* {
+  box-sizing: border-box; /* Consistent box sizing across all elements */
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif; /* Material-UI default font stack */
+  -webkit-font-smoothing: antialiased; /* Smooth font rendering on webkit browsers */
+  -moz-osx-font-smoothing: grayscale; /* Smooth font rendering on Firefox */
+  background-color: #f5f5f5; /* Light gray background */
+  color: #333333; /* Dark gray text color for good contrast */
+}
+
+/* App container styles */
+#root {
+  min-height: 100vh; /* Ensure app takes full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Custom scrollbar styling for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Light gray track */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1; /* Medium gray thumb */
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1; /* Darker gray on hover */
+}
+
+/* Animation keyframes for live indicators and loading states */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Utility classes for common animations */
+.pulse-animation {
+  animation: pulse 2s infinite;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+/* Custom styles for transaction status indicators */
+.transaction-status-approved {
+  background-color: #e8f5e8 !important; /* Light green background */
+  color: #2e7d32 !important; /* Dark green text */
+  border: 1px solid #4caf50 !important; /* Green border */
+}
+
+.transaction-status-declined {
+  background-color: #ffebee !important; /* Light red background */
+  color: #d32f2f !important; /* Dark red text */
+  border: 1px solid #f44336 !important; /* Red border */
+}
+
+.transaction-status-flagged {
+  background-color: #fff3e0 !important; /* Light orange background */
+  color: #ef6c00 !important; /* Dark orange text */
+  border: 1px solid #ff9800 !important; /* Orange border */
+}
+
+.transaction-status-pending {
+  background-color: #f3e5f5 !important; /* Light purple background */
+  color: #7b1fa2 !important; /* Dark purple text */
+  border: 1px solid #9c27b0 !important; /* Purple border */
+}
+
+/* Risk level indicator styles */
+.risk-low {
+  background-color: #e8f5e8 !important;
+  color: #2e7d32 !important;
+}
+
+.risk-medium {
+  background-color: #fff3e0 !important;
+  color: #ef6c00 !important;
+}
+
+.risk-high {
+  background-color: #ffebee !important;
+  color: #d32f2f !important;
+}
+
+.risk-critical {
+  background-color: #ffebee !important;
+  color: #b71c1c !important;
+  font-weight: bold !important;
+}
+
+/* Custom table styles for better data presentation */
+.data-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.data-table th {
+  background-color: #fafafa; /* Light gray header background */
+  font-weight: 600;
+  text-align: left;
+  padding: 12px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.data-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: top;
+}
+
+.data-table tbody tr:hover {
+  background-color: #f5f5f5; /* Light gray row hover */
+}
+
+/* Loading overlay styles */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Alert styles for different severity levels */
+.alert-critical {
+  border-left: 4px solid #d32f2f !important;
+  background-color: #ffebee !important;
+}
+
+.alert-high {
+  border-left: 4px solid #ff5722 !important;
+  background-color: #fff3e0 !important;
+}
+
+.alert-medium {
+  border-left: 4px solid #ff9800 !important;
+  background-color: #fff8e1 !important;
+}
+
+.alert-low {
+  border-left: 4px solid #4caf50 !important;
+  background-color: #e8f5e8 !important;
+}
+
+/* Chart container styles for consistent sizing */
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+.chart-container canvas {
+  max-height: 100% !important;
+}
+
+/* Responsive design helpers */
+@media (max-width: 768px) {
+  /* Mobile-specific styles */
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  .full-width-on-mobile {
+    width: 100% !important;
+  }
+
+  /* Reduce padding on mobile */
+  .data-table th,
+  .data-table td {
+    padding: 6px 8px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Small mobile styles */
+  body {
+    font-size: 14px;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 4px 6px;
+    font-size: 12px;
+  }
+}
+
+/* Print styles for reports */
+@media print {
+  /* Hide unnecessary elements when printing */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Ensure charts and tables print well */
+  .chart-container {
+    break-inside: avoid;
+  }
+
+  .data-table {
+    break-inside: avoid;
+  }
+
+  /* Use black and white for better printing */
+  * {
+    color: black !important;
+    background: white !important;
+  }
+
+  .data-table th {
+    background-color: #f0f0f0 !important;
+  }
+}
+
+/* Focus styles for accessibility */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #004c91; /* Walmart blue focus outline */
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  body {
+    background-color: white;
+    color: black;
+  }
+
+  .data-table th {
+    background-color: #e0e0e0;
+  }
+
+  .data-table tbody tr:hover {
+    background-color: #f0f0f0;
+  }
+}
+
+/* Reduced motion support for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .pulse-animation {
+    animation: none !important;
+  }
+}

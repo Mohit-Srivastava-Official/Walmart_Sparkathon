@@ -1,0 +1,302 @@
+/* Additional App-specific styles */
+
+/* App component styles */
+.App {
+  text-align: center; /* Center text alignment for the main app container */
+}
+
+/* Header styles for consistent branding */
+.App-header {
+  background-color: #004c91; /* Walmart blue header background */
+  padding: 20px;
+  color: white;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin); /* Responsive font sizing */
+}
+
+/* Logo animation for brand recognition */
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear; /* Slow, continuous rotation */
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Link styles for interactive elements */
+.App-link {
+  color: #ffc220; /* Walmart yellow for links */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.App-link:hover {
+  color: #ffcf4d; /* Lighter yellow on hover */
+  text-decoration: underline;
+}
+
+/* Custom button styles for brand consistency */
+.walmart-button {
+  background-color: #004c91; /* Walmart blue background */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: none; /* Preserve text casing */
+}
+
+.walmart-button:hover {
+  background-color: #003366; /* Darker blue on hover */
+  transform: translateY(-1px); /* Subtle lift effect */
+  box-shadow: 0 4px 8px rgba(0, 76, 145, 0.3);
+}
+
+.walmart-button:active {
+  transform: translateY(0); /* Reset transform on click */
+  box-shadow: 0 2px 4px rgba(0, 76, 145, 0.3);
+}
+
+.walmart-button:disabled {
+  background-color: #cccccc; /* Gray for disabled state */
+  color: #666666;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Secondary button variant */
+.walmart-button-secondary {
+  background-color: #ffc220; /* Walmart yellow background */
+  color: #333333; /* Dark text for contrast */
+}
+
+.walmart-button-secondary:hover {
+  background-color: #cc9b00; /* Darker yellow on hover */
+}
+
+/* Outline button variant */
+.walmart-button-outline {
+  background-color: transparent;
+  color: #004c91;
+  border: 2px solid #004c91;
+}
+
+.walmart-button-outline:hover {
+  background-color: #004c91;
+  color: white;
+}
+
+/* Card component styles for consistent layout */
+.info-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border: 1px solid #e0e0e0;
+  margin-bottom: 16px;
+  transition: all 0.2s ease;
+}
+
+.info-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+  transform: translateY(-2px); /* Subtle lift effect */
+}
+
+/* Error and success message styles */
+.error-message {
+  background-color: #ffebee; /* Light red background */
+  color: #d32f2f; /* Dark red text */
+  padding: 12px 16px;
+  border-radius: 6px;
+  border-left: 4px solid #d32f2f;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+}
+
+.success-message {
+  background-color: #e8f5e8; /* Light green background */
+  color: #2e7d32; /* Dark green text */
+  padding: 12px 16px;
+  border-radius: 6px;
+  border-left: 4px solid #2e7d32;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+}
+
+.warning-message {
+  background-color: #fff3e0; /* Light orange background */
+  color: #ef6c00; /* Dark orange text */
+  padding: 12px 16px;
+  border-radius: 6px;
+  border-left: 4px solid #ef6c00;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+}
+
+.info-message {
+  background-color: #e3f2fd; /* Light blue background */
+  color: #1976d2; /* Dark blue text */
+  padding: 12px 16px;
+  border-radius: 6px;
+  border-left: 4px solid #1976d2;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Form styles for consistent input appearance */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333333;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #004c91; /* Walmart blue focus border */
+  box-shadow: 0 0 0 2px rgba(0, 76, 145, 0.1);
+}
+
+.form-input:invalid {
+  border-color: #d32f2f; /* Red border for invalid inputs */
+}
+
+.form-input:disabled {
+  background-color: #f5f5f5;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+/* Loading spinner styles */
+.loading-spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #004c91;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Progress bar styles */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #004c91;
+  transition: width 0.3s ease;
+}
+
+/* Badge and notification styles */
+.notification-badge {
+  background-color: #d32f2f; /* Red background for alerts */
+  color: white;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Status indicator styles */
+.status-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.status-online {
+  background-color: #4caf50; /* Green for online */
+}
+
+.status-offline {
+  background-color: #f44336; /* Red for offline */
+}
+
+.status-warning {
+  background-color: #ff9800; /* Orange for warning */
+}
+
+/* Utility classes for spacing and layout */
+.mt-1 { margin-top: 8px; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+.ml-1 { margin-left: 8px; }
+.ml-2 { margin-left: 16px; }
+.mr-1 { margin-right: 8px; }
+.mr-2 { margin-right: 16px; }
+
+.p-1 { padding: 8px; }
+.p-2 { padding: 16px; }
+.p-3 { padding: 24px; }
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.flex { display: flex; }
+.flex-column { flex-direction: column; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.align-center { align-items: center; }
+
+.w-full { width: 100%; }
+.h-full { height: 100%; }

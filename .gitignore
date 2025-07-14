@@ -1,0 +1,53 @@
+###############################
+# Node.js / React
+###############################
+node_modules/
+frontend/node_modules/
+frontend/node_modules/.cache/
+build/
+dist/
+frontend/build/
+frontend/dist/
+
+###############################
+# Python / Flask
+###############################
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+.coverage
+coverage.xml
+*.sqlite3
+db.sqlite3
+backend/__pycache__/
+backend/*.pyc
+
+###############################
+# OS/Editor
+###############################
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.history/
+.log
+*.log
+
+###############################
+# Environment & Secrets
+###############################
+.env
+.env.*
+frontend/.env
+frontend/.env.*
+backend/.env
+backend/.env.*
+
+###############################
+# Docker
+###############################
+docker-compose.override.yml
+*.pid
