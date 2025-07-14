@@ -115,23 +115,6 @@ sparkathon-securecart/
 | Authentication | 2FA | Multi-biometric | Enhanced security |
 | Scalability | Vertical | Horizontal | Cost-effective |
 
-## 🎬 2-Minute Video Script
-
-**[0:00-0:15] Hook & Problem**
-"Every second, Walmart processes thousands of transactions. But with cyber threats evolving, how do we protect customers while maintaining seamless shopping?"
-
-**[0:15-0:45] Solution Introduction**
-"Introducing SecureCart AI - a revolutionary fraud detection system that thinks faster than fraudsters. Using advanced AI, blockchain, and biometrics, we detect threats in under 100 milliseconds."
-
-**[0:45-1:15] Technical Demo**
-"Watch as our system analyzes transaction patterns, verifies identity through biometrics, and records everything on an immutable blockchain - all happening invisibly to the customer."
-
-**[1:15-1:45] Impact & Results**
-"The result? 70% reduction in fraud losses, 99.9% faster detection, and most importantly - unshakeable customer trust."
-
-**[1:45-2:00] Call to Action**
-"SecureCart AI: Because in the digital age, trust isn't just earned - it's engineered."
-
 ## 👥 Team
 
 - **Frontend Developer**: React/TypeScript specialist
@@ -157,14 +140,6 @@ sparkathon-securecart/
 - Performance optimization
 - Walmart systems integration
 
-## 🏆 Why This Will Win Sparkathon 2025
 
-1. **Addresses Real Problem**: Tackles Walmart's actual fraud challenges
-2. **Cutting-edge Technology**: Combines AI, blockchain, and biometrics
-3. **Measurable Impact**: Clear ROI and customer benefits
-4. **Scalable Solution**: Can handle Walmart's massive transaction volume
-5. **Innovation Factor**: Novel approach to retail cybersecurity
-
----
 
 *Built with ❤️ for Walmart Sparkathon 2025*
